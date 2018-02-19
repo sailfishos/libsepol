@@ -32,7 +32,7 @@ Source: selinux-userland-%{version}/upstream
 # run:
 # $ VERSION=2.7 ./make-fedora-selinux-patch.sh libsepol
 # HEAD https://github.com/fedora-selinux/selinux/commit/2d0b90c1d95ec908f94c06337ec07a96b7d1205e
-#Patch1: libsepol-fedora.patch
+Patch1: ln_old_coreutils.patch
 URL: https://github.com/SELinuxProject/selinux/wiki
 BuildRequires: flex
 
@@ -72,6 +72,7 @@ needed for developing applications that manipulate binary policies.
 
 %prep
 %setup -q -n selinux-userland-%{version}/upstream
+%patch1
 
 # sparc64 is an -fPIC arch, so we need to fix it here
 %ifarch sparc64
