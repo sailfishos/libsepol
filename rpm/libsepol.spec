@@ -80,6 +80,8 @@ sed -i 's/fpic/fPIC/g' src/Makefile
 
 %build
 make clean
+# only build libsepol
+cd %{name}
 make %{?_smp_mflags} CFLAGS="%{optflags}" LDFLAGS="%{?__global_ldflags}"
 
 %install
@@ -90,6 +92,8 @@ mkdir -p ${RPM_BUILD_ROOT}%{_includedir}
 mkdir -p ${RPM_BUILD_ROOT}%{_bindir} 
 mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man3
 mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man8
+# only install libsepol files
+cd %{name}
 make DESTDIR="${RPM_BUILD_ROOT}" LIBDIR="${RPM_BUILD_ROOT}%{_libdir}" SHLIBDIR="${RPM_BUILD_ROOT}/%{_libdir}" install
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/genpolbools
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/genpolusers
@@ -124,9 +128,8 @@ exit 0
 
 %files
 %defattr(-,root,root)
-%{!?_licensedir:%global license %%doc}
-%license COPYING
 %{_libdir}/libsepol.so.1
+%doc %{name}/COPYING
 
 %changelog
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.7-4
