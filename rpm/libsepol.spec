@@ -26,7 +26,7 @@ Version: 2.7
 Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
-Source: selinux-userland-%{version}/upstream
+Source: %{name}-%{version}.tar.bz2
 
 # download https://raw.githubusercontent.com/fedora-selinux/scripts/master/selinux/make-fedora-selinux-patch.sh
 # run:
@@ -71,7 +71,7 @@ The libsepol-static package contains the static libraries and header files
 needed for developing applications that manipulate binary policies. 
 
 %prep
-%setup -q -n selinux-userland-%{version}/upstream
+%setup -q -n %{name}-%{version}/upstream
 %patch1
 
 # sparc64 is an -fPIC arch, so we need to fix it here
