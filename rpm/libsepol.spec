@@ -35,6 +35,8 @@ Source: %{name}-%{version}.tar.bz2
 Patch1: ln_old_coreutils.patch
 URL: https://github.com/SELinuxProject/selinux/wiki
 BuildRequires: flex
+# we don't build python2 modules, but make clean expects python2 (could be patched out though)
+BuildRequires: python
 
 %description
 Security-enhanced Linux is a feature of the Linux® kernel and a number
