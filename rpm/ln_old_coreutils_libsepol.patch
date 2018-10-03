@@ -1,0 +1,15 @@
+diff --git a/libsepol/src/Makefile b/libsepol/src/Makefile
+index ccb7023..e37af6e 100644
+--- a/libsepol/src/Makefile
++++ b/libsepol/src/Makefile
+@@ -85,7 +85,8 @@ install: all
+ 	install -m 755 $(LIBSO) $(DESTDIR)$(SHLIBDIR)
+ 	test -d $(DESTDIR)$(LIBDIR)/pkgconfig || install -m 755 -d $(DESTDIR)$(LIBDIR)/pkgconfig
+ 	install -m 644 $(LIBPC) $(DESTDIR)$(LIBDIR)/pkgconfig
+-	$(LN) -sf --relative $(DESTDIR)$(SHLIBDIR)/$(LIBSO) $(DESTDIR)$(LIBDIR)/$(TARGET)
++	# Since --relative is not present in ln provided by our coreutils use lib.so directly in ln
++	$(LN) -sf $(LIBSO) $(DESTDIR)$(LIBDIR)/$(TARGET)
+ 
+ relabel:
+ 	/sbin/restorecon $(DESTDIR)$(SHLIBDIR)/$(LIBSO)
+

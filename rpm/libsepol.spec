@@ -27,12 +27,7 @@ Release: 1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: %{name}-%{version}.tar.bz2
-
-# download https://raw.githubusercontent.com/fedora-selinux/scripts/master/selinux/make-fedora-selinux-patch.sh
-# run:
-# $ VERSION=2.7 ./make-fedora-selinux-patch.sh libsepol
-# HEAD https://github.com/fedora-selinux/selinux/commit/2d0b90c1d95ec908f94c06337ec07a96b7d1205e
-Patch1: ln_old_coreutils.patch
+Patch0: ln_old_coreutils_libsepol.patch
 URL: https://github.com/SELinuxProject/selinux/wiki
 BuildRequires: flex
 # we don't build python2 modules, but make clean expects python2 (could be patched out though)
@@ -74,7 +69,7 @@ needed for developing applications that manipulate binary policies.
 
 %prep
 %setup -q -n %{name}-%{version}/upstream
-%patch1
+%patch0 -p1
 
 # sparc64 is an -fPIC arch, so we need to fix it here
 %ifarch sparc64
@@ -97,7 +92,7 @@ mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man3
 mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man8
 # only install libsepol files
 cd %{name}
-make DESTDIR="${RPM_BUILD_ROOT}" LIBDIR="${RPM_BUILD_ROOT}%{_libdir}" SHLIBDIR="${RPM_BUILD_ROOT}/%{_libdir}" install
+make DESTDIR="${RPM_BUILD_ROOT}" LIBDIR="%{_libdir}" SHLIBDIR="%{_libdir}" install
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/genpolbools
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/genpolusers
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/chkcon
