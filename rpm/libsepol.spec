@@ -29,7 +29,9 @@ Group: System Environment/Libraries
 Source: %{name}-%{version}.tar.bz2
 Patch0: ln_old_coreutils_libsepol.patch
 URL: https://github.com/SELinuxProject/selinux/wiki
+BuildRequires: dbus-glib-devel
 BuildRequires: flex
+BuildRequires: pcre-devel
 # we don't build python2 modules, but make clean expects python2 (could be patched out though)
 BuildRequires: python
 
