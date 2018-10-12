@@ -54,7 +54,7 @@ on binary policies such as customizing policy boolean settings.
 %package devel
 Summary: Header files and libraries used to build policy manipulation tools
 Group: Development/Libraries
-Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 The libsepol-devel package contains the libraries and header files
@@ -63,7 +63,7 @@ needed for developing applications that manipulate binary policies.
 %package static
 Summary: static libraries used to build policy manipulation tools
 Group: Development/Libraries
-Requires: %{name}-devel%{?_isa} = %{version}-%{release}
+Requires: %{name}-devel = %{version}-%{release}
 
 %description static
 The libsepol-static package contains the static libraries and header files
