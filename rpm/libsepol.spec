@@ -86,7 +86,6 @@ make %{?_smp_mflags} CFLAGS="%{optflags}" LDFLAGS="%{?__global_ldflags}"
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
-mkdir -p ${RPM_BUILD_ROOT}/%{_lib} 
 mkdir -p ${RPM_BUILD_ROOT}/%{_libdir} 
 mkdir -p ${RPM_BUILD_ROOT}%{_includedir} 
 mkdir -p ${RPM_BUILD_ROOT}%{_bindir} 
