@@ -77,7 +77,7 @@ needed for developing applications that manipulate binary policies.
 make clean
 # only build libsepol
 cd %{name}
-make %{?_smp_mflags} CFLAGS="%{optflags}" LDFLAGS="%{?__global_ldflags}"
+make %{?_smp_mflags} CFLAGS="%{optflags}"
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
