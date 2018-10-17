@@ -73,11 +73,6 @@ needed for developing applications that manipulate binary policies.
 %setup -q -n %{name}-%{version}/upstream
 %patch0 -p1
 
-# sparc64 is an -fPIC arch, so we need to fix it here
-%ifarch sparc64
-sed -i 's/fpic/fPIC/g' src/Makefile
-%endif
-
 %build
 make clean
 # only build libsepol
