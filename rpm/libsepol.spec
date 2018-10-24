@@ -105,10 +105,7 @@ rm -rf ${RPM_BUILD_ROOT}%{_mandir}/man8
 %clean
 rm -rf ${RPM_BUILD_ROOT}
 
-%post
-/sbin/ldconfig
-[ -x /sbin/telinit ] && [ -p /dev/initctl ]  && /sbin/telinit U
-exit 0
+%post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
