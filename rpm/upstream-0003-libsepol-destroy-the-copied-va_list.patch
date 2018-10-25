@@ -1,0 +1,41 @@
+From a761a88aab28e0319ad27aadec654c7137ebf9c1 Mon Sep 17 00:00:00 2001
+From: Nicolas Iooss <nicolas.iooss@m4x.org>
+Date: Sat, 26 May 2018 18:26:49 +0200
+Subject: [PATCH] libsepol: destroy the copied va_list
+
+va_copy()'s manpage [1] states:
+
+    Each invocation of va_copy() must be matched by a corresponding
+    invocation of va_end() in the same function.
+
+create_str_helper() is using va_copy() without va_end(). Add the missing
+call.
+
+[1] https://linux.die.net/man/3/va_copy
+
+Signed-off-by: Nicolas Iooss <nicolas.iooss@m4x.org>
+---
+ libsepol/src/kernel_to_common.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/libsepol/src/kernel_to_common.c b/libsepol/src/kernel_to_common.c
+index 342bc3c9..7c5699c5 100644
+--- a/libsepol/src/kernel_to_common.c
++++ b/libsepol/src/kernel_to_common.c
+@@ -80,10 +80,13 @@ static char *create_str_helper(const char *fmt, int num, va_list vargs)
+ 		goto exit;
+ 	}
+ 
++	va_end(vargs2);
++
+ 	return str;
+ 
+ exit:
+ 	free(str);
++	va_end(vargs2);
+ 	return NULL;
+ }
+ 
+-- 
+2.17.1
+

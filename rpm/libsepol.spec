@@ -27,7 +27,11 @@ Release: 1
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: %{name}-%{version}.tar.bz2
-Patch0: ln_old_coreutils_libsepol.patch
+Patch0: upstream-0001-libsepol-do-not-leak-memory-if-list_prepend-fails.patch
+Patch1: upstream-0002-libsepol-do-not-call-malloc-with-0-byte.patch
+Patch2: upstream-0003-libsepol-destroy-the-copied-va_list.patch
+Patch3: upstream-Support-Android-M-and-official-v30-sepolicy-format.patch
+Patch4: ln_old_coreutils_libsepol.patch
 URL: https://github.com/SELinuxProject/selinux/wiki
 BuildRequires: dbus-glib-devel
 BuildRequires: flex
@@ -72,6 +76,10 @@ needed for developing applications that manipulate binary policies.
 %prep
 %setup -q -n %{name}-%{version}/upstream
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 %build
 make clean
@@ -97,10 +105,7 @@ rm -rf ${RPM_BUILD_ROOT}%{_mandir}/man8
 %clean
 rm -rf ${RPM_BUILD_ROOT}
 
-%post
-/sbin/ldconfig
-[ -x /sbin/telinit ] && [ -p /dev/initctl ]  && /sbin/telinit U
-exit 0
+%post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
