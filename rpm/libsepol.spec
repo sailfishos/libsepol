@@ -1,6 +1,6 @@
 # based on work by The Fedora Project (2017)
 # Copyright (c) 1998, 1999, 2000 Thai Open Source Software Center Ltd
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
@@ -8,10 +8,10 @@
 # distribute, sublicense, and/or sell copies of the Software, and to
 # permit persons to whom the Software is furnished to do so, subject to
 # the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included
 # in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -20,24 +20,20 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Summary: SELinux binary policy manipulation library 
+Summary: SELinux binary policy manipulation library
 Name: libsepol
-Version: 2.8
+Version: 3.0
 Release: 1
 License: LGPLv2+
-Group: System Environment/Libraries
 Source: %{name}-%{version}.tar.bz2
-Patch0: upstream-0001-libsepol-do-not-leak-memory-if-list_prepend-fails.patch
 Patch1: upstream-0002-libsepol-do-not-call-malloc-with-0-byte.patch
-Patch2: upstream-0003-libsepol-destroy-the-copied-va_list.patch
 Patch3: upstream-Support-Android-M-and-official-v30-sepolicy-format.patch
 Patch4: ln_old_coreutils_libsepol.patch
 URL: https://github.com/SELinuxProject/selinux/wiki
 BuildRequires: dbus-glib-devel
 BuildRequires: flex
 BuildRequires: pcre-devel
-# we don't build python2 modules, but make clean expects python2 (could be patched out though)
-BuildRequires: python
+BuildRequires: python3-base
 
 %description
 Security-enhanced Linux is a feature of the Linux® kernel and a number
@@ -57,29 +53,22 @@ on binary policies such as customizing policy boolean settings.
 
 %package devel
 Summary: Header files and libraries used to build policy manipulation tools
-Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description devel
 The libsepol-devel package contains the libraries and header files
-needed for developing applications that manipulate binary policies. 
+needed for developing applications that manipulate binary policies.
 
 %package static
 Summary: static libraries used to build policy manipulation tools
-Group: Development/Libraries
 Requires: %{name}-devel = %{version}-%{release}
 
 %description static
 The libsepol-static package contains the static libraries and header files
-needed for developing applications that manipulate binary policies. 
+needed for developing applications that manipulate binary policies.
 
 %prep
-%setup -q -n %{name}-%{version}/upstream
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
+%autosetup -p1 -n %{name}-%{version}/upstream
 
 %build
 make clean
@@ -89,9 +78,9 @@ make %{?_smp_mflags} CFLAGS="%{optflags}"
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
-mkdir -p ${RPM_BUILD_ROOT}/%{_libdir} 
-mkdir -p ${RPM_BUILD_ROOT}%{_includedir} 
-mkdir -p ${RPM_BUILD_ROOT}%{_bindir} 
+mkdir -p ${RPM_BUILD_ROOT}/%{_libdir}
+mkdir -p ${RPM_BUILD_ROOT}%{_includedir}
+mkdir -p ${RPM_BUILD_ROOT}%{_bindir}
 mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man3
 mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man8
 # only install libsepol files
@@ -101,6 +90,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/genpolbools
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/genpolusers
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/chkcon
 rm -rf ${RPM_BUILD_ROOT}%{_mandir}/man8
+rm -rf ${RPM_BUILD_ROOT}%{_mandir}/ru/man8
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
@@ -127,5 +117,5 @@ rm -rf ${RPM_BUILD_ROOT}
 
 %files
 %defattr(-,root,root)
+%license %{name}/COPYING
 %{_libdir}/libsepol.so.1
-%doc %{name}/COPYING
