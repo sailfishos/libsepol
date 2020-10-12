@@ -22,14 +22,13 @@
 
 Summary: SELinux binary policy manipulation library
 Name: libsepol
-Version: 3.0
+Version: 3.1
 Release: 1
 License: LGPLv2+
-Source: %{name}-%{version}.tar.bz2
-Patch1: upstream-0002-libsepol-do-not-call-malloc-with-0-byte.patch
-Patch3: upstream-Support-Android-M-and-official-v30-sepolicy-format.patch
-Patch4: ln_old_coreutils_libsepol.patch
 URL: https://github.com/SELinuxProject/selinux/wiki
+Source: %{name}-%{version}.tar.bz2
+Patch0001: 0001-libsepol-do-not-call-malloc-with-0-byte.patch
+Patch0002: 0002-Support-Android-M-and-official-v30-sepolicy-format.patch
 BuildRequires: dbus-glib-devel
 BuildRequires: flex
 BuildRequires: pcre-devel
@@ -71,13 +70,10 @@ needed for developing applications that manipulate binary policies.
 %autosetup -p1 -n %{name}-%{version}/upstream
 
 %build
-make clean
-# only build libsepol
 cd %{name}
-make %{?_smp_mflags} CFLAGS="%{optflags}"
+%make_build CFLAGS="%{optflags}"
 
 %install
-rm -rf ${RPM_BUILD_ROOT}
 mkdir -p ${RPM_BUILD_ROOT}/%{_libdir}
 mkdir -p ${RPM_BUILD_ROOT}%{_includedir}
 mkdir -p ${RPM_BUILD_ROOT}%{_bindir}
@@ -92,8 +88,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/chkcon
 rm -rf ${RPM_BUILD_ROOT}%{_mandir}/man8
 rm -rf ${RPM_BUILD_ROOT}%{_mandir}/ru/man8
 
-%clean
-rm -rf ${RPM_BUILD_ROOT}
 
 %post -p /sbin/ldconfig
 
