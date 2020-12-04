@@ -1,4 +1,4 @@
-From c202eadc77b42bb97c9f397c49a853e89600afcd Mon Sep 17 00:00:00 2001
+From 1e09f403d154394c21a3c746eb1964816f3d312d Mon Sep 17 00:00:00 2001
 From: Jorrit Jongma <git@jongma.org>
 Date: Fri, 11 Mar 2016 13:43:25 +0100
 Subject: [PATCH] Support Android/M and official v30 sepolicy format
@@ -128,18 +128,18 @@ index 257f051a..e81fda3d 100644
  		if (rc < 0) {
  			ERR(fp->handle, "truncated entry");
 diff --git a/libsepol/src/write.c b/libsepol/src/write.c
-index 1fb30957..47119eee 100644
+index 1fd6a16a..3bb5dddf 100644
 --- a/libsepol/src/write.c
 +++ b/libsepol/src/write.c
-@@ -45,6 +45,7 @@
+@@ -44,6 +44,7 @@
  #include "debug.h"
  #include "private.h"
  #include "mls.h"
 +#include "android_m_compat.h"
  
- struct policy_data {
- 	struct policy_file *fp;
-@@ -219,7 +220,11 @@ static int avtab_write_item(policydb_t * p,
+ #define glblub_version ((p->policy_type == POLICY_KERN && \
+ 		     p->policyvers >= POLICYDB_VERSION_GLBLUB) || \
+@@ -223,7 +224,11 @@ static int avtab_write_item(policydb_t * p,
  	buf16[0] = cpu_to_le16(cur->key.source_type);
  	buf16[1] = cpu_to_le16(cur->key.target_type);
  	buf16[2] = cpu_to_le16(cur->key.target_class);
@@ -152,7 +152,7 @@ index 1fb30957..47119eee 100644
  	items = put_entry(buf16, sizeof(uint16_t), 4, fp);
  	if (items != 4)
  		return POLICYDB_ERROR;
-@@ -239,10 +244,12 @@ static int avtab_write_item(policydb_t * p,
+@@ -243,10 +248,12 @@ static int avtab_write_item(policydb_t * p,
  	}
  
  	if (cur->key.specified & AVTAB_XPERMS) {
@@ -170,5 +170,5 @@ index 1fb30957..47119eee 100644
  		items = put_entry(&buf8, sizeof(uint8_t),1,fp);
  		if (items != 1)
 -- 
-2.17.1
+2.28.0
 
