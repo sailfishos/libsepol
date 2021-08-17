@@ -29,7 +29,6 @@ URL: https://github.com/SELinuxProject/selinux/wiki
 Source: %{name}-%{version}.tar.bz2
 Patch0001: 0001-libsepol-do-not-call-malloc-with-0-byte.patch
 Patch0002: 0002-Support-Android-M-and-official-v30-sepolicy-format.patch
-BuildRequires: dbus-glib-devel
 BuildRequires: flex
 BuildRequires: pkgconfig(libpcre)
 BuildRequires: pkgconfig(python3)
