@@ -22,13 +22,12 @@
 
 Summary: SELinux binary policy manipulation library
 Name: libsepol
-Version: 3.1
+Version: 3.7
 Release: 1
 License: LGPLv2+
 URL: https://github.com/SELinuxProject/selinux/wiki
 Source: %{name}-%{version}.tar.bz2
-Patch0001: 0001-libsepol-do-not-call-malloc-with-0-byte.patch
-Patch0002: 0002-Support-Android-M-and-official-v30-sepolicy-format.patch
+Patch0001: 0001-Support-Android-M-and-official-v30-sepolicy-format.patch
 BuildRequires: flex
 BuildRequires: pkgconfig(libpcre)
 BuildRequires: pkgconfig(python3)
@@ -65,6 +64,13 @@ Requires: %{name}-devel = %{version}-%{release}
 The libsepol-static package contains the static libraries and header files
 needed for developing applications that manipulate binary policies.
 
+%package utils
+Summary: SELinux libsepol utilities
+Requires: %{name} = %{version}-%{release}
+
+%description utils
+The libsepol-utils package contains the utilities
+
 %prep
 %autosetup -p1 -n %{name}-%{version}/upstream
 
@@ -85,7 +91,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/genpolbools
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/genpolusers
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/chkcon
 rm -rf ${RPM_BUILD_ROOT}%{_mandir}/man8
-rm -rf ${RPM_BUILD_ROOT}%{_mandir}/ru/man8
 
 
 %post -p /sbin/ldconfig
@@ -93,11 +98,9 @@ rm -rf ${RPM_BUILD_ROOT}%{_mandir}/ru/man8
 %postun -p /sbin/ldconfig
 
 %files static
-%defattr(-,root,root)
 %{_libdir}/libsepol.a
 
 %files devel
-%defattr(-,root,root)
 %{_libdir}/libsepol.so
 %{_libdir}/pkgconfig/libsepol.pc
 %{_includedir}/sepol/*.h
@@ -109,6 +112,12 @@ rm -rf ${RPM_BUILD_ROOT}%{_mandir}/ru/man8
 %{_includedir}/sepol/cil/*.h
 
 %files
-%defattr(-,root,root)
-%license %{name}/COPYING
-%{_libdir}/libsepol.so.1
+%license LICENSE
+%{_libdir}/libsepol.so.2
+
+%files utils
+%{_bindir}/sepol_check_access
+%{_bindir}/sepol_compute_av
+%{_bindir}/sepol_compute_member
+%{_bindir}/sepol_compute_relabel
+%{_bindir}/sepol_validate_transition
